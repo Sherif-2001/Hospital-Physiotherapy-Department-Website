@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Your description" />
+    <meta name="author" content="Your name" />
+
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on Facebook, Twitter, LinkedIn -->
+    <meta property="og:site_name" content="" />
+    <!-- website name -->
+    <meta property="og:site" content="" />
+    <!-- website link -->
+    <meta property="og:title" content="" />
+    <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="" />
+    <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="" />
+    <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="" />
+    <!-- where do you want your post to link to -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- to have large image post format in Twitter -->
+
+    <!-- Webpage Title -->
+    <title>Muscle Care | Physiotherapy Department</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="static\css\bootstrap.min.css" rel="stylesheet" />
+    <link href="static\css\fontawesome-all.min.css" rel="stylesheet" />
+    <link href="static\css\aos.min.css" rel="stylesheet" />
+    <link href="static\css\swiper.css" rel="stylesheet" />
+    <link href="static\css\styleIndex.css" rel="stylesheet" />
+
+    <script src=
+    "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        </script>
+        <script src=
+    "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+        </script>
+        <script src=
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+        </script>
+
+    <!-- Favicon -->
+    <link rel="icon" href="static\assets\img\favicon.png" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav
+      id="navbar"
+      class="navbar navbar-expand-lg fixed-top navbar-dark"
+      aria-label="Main navigation"
+    >
+      <div class="container">
+        <!-- Image Logo -->
+        <!-- <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> -->
+
+        <!-- Text Logo - Use this if you don't have a graphic logo -->
+        <a class="navbar-brand logo-text" href="{{ url_for('index') }}"
+          >Muscle Care</a
+        >
+
+        <button
+          class="navbar-toggler p-0 border-0"
+          type="button"
+          id="navbarSideCollapse"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="navbar-collapse offcanvas-collapse"
+          id="navbarsExampleDefault"
+        >
+          <ul class="navbar-nav ms-auto navbar-nav-scroll">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              {% if session['user_admin'] %}
+              <a class="nav-link" href="/viewdoctor">View Doctors</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              {% if session['user_admin'] %}
+              <a class="nav-link" href="/viewdevice">View Devices</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              {% if session['user_admin'] %}
+              <span class="badge badge-pill badge-info" style="float:right;margin-bottom:-12px;margin-right:-8px;font-size:10px">{{count()}}</span>
+              <a class="nav-link" href="/adminViewDoctor">Accept Doctors</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              {% if session['user_doctor']%}
+              <a class="nav-link" href="/addAppointment">Add Appointment</a>
+              {%endif%}
+            </li>
+            <li class="nav-item">
+              {% if session['user_admin'] or session['user_patient'] or session['user_doctor'] %}
+              <a class="nav-link" href="{{url_for('myTips')}}">Tips</a>
+              {%else%}
+              <a class="nav-link" href="{{url_for('preSignUp')}}">Tips</a>
+              {%endif%}
+            </li>
+            <li class="nav-item">
+              {% if session['user_patient'] %}
+              <a class="nav-link" href="{{url_for('bookNow')}}">Book Now</a>
+              {%endif%}
+            </li>
+            <li class="nav-item">
+              {% if session['loggedIn'] and (session['user_doctor'] or session['user_patient']) %}
+              <a class="nav-link" href="{{url_for('profileh')}}">My Profile</a>
+              {%endif%}
+            </li>
+            <li class="nav-item">
+              {% if session['users_technician'] or session['user_admin'] %}
+              <a class="nav-link" href="/adddevice">Add Device</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/home#about">About</a>
+            </li>
+            <li class="nav-item">
+              {% if session['user_doctor'] or session['user_patient'] %}
+              <span class="badge badge-pill badge-info" style="float:right;margin-bottom:-12px;margin-right:-8px;font-size:10px">{{count()}}</span>
+              <a class="nav-link" href="/inbox">Inbox</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              {% if session['user_doctor'] or session['user_patient'] %}
+              <a class="nav-link" href="/messages">Messages</a>
+              {% endif %}
+            </li>
+
+            <li class="nav-item">
+              {% if not (session['user_admin'] or session['user_doctor']) %}
+              <a class="nav-link" href="/home#contact">Contact</a>
+              {% endif %}
+            </li>
+            <li class="nav-item">
+              {% if session['loggedIn']%}
+              <a class="nav-link" href="/logout">Log Out</a>
+              {% endif %}
+            </li>
+          </ul>
+          {% if not session['loggedIn'] %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle"
+                  id="dropdown01"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  href="#">Login | SignUp</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li>
+                  <a class="dropdown-item" href="{{url_for('preSignUp')}}"
+                    >Sign Up</a
+                  >
+                </li>
+                <li><div class="dropdown-divider"></div></li>
+                <li>
+                  <a class="dropdown-item" href="{{url_for('login')}}">Log In</a>
+                </li>
+              </ul>
+            </li>
+            {% endif %}
+          <span class="nav-item social-icons">
+            <span class="fa-stack">
+              <a href="https://www.facebook.com/Magdy.Nasr.41">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-facebook-f fa-stack-1x"></i>
+              </a>
+            </span>
+            <span class="fa-stack">
+              <a href="https://www.facebook.com/Magdy.Nasr.41">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fab fa-twitter fa-stack-1x"></i>
+              </a>
+            </span>
+          </span>
+        </div>
+        <!-- end of navbar-collapse -->
+      </div>
+      <!-- end of container -->
+    </nav>
+    <!-- end of navbar -->
+    <!-- end of navigation -->
+
+    {%block main%}
+
+    <!-- Home -->
+    <section class="home py-5 d-flex align-items-center" id="header">
+      <div class="container text-light py-5" data-aos="fade-right">
+        <h1 class="headline">
+          <span class="home_text">The Care You Deserve</span><br />
+          The Results You Want
+        </h1>
+        <p class="para para-light py-3">
+          Our team of qualified and experienced professionals has been helping
+          patients regain their health and wellness since 2000.<br />
+          We use scientifically validated, evidence-based treatments to solve
+          our patients' health problems.
+        </p>
+        <!-- <div class="d-flex align-items-center">
+          <p class="p-2"><i class="fas fa-laptop-house fa-lg"></i></p>
+          <p>Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div class="d-flex align-items-center">
+          <p class="p-2"><i class="fas fa-wifi fa-lg"></i></p>
+          <p>Lorem ipsum dolor sit amet.</p>
+        </div> -->
+        <div class="my-3">
+          {% if session['user_patient'] %}
+          <a class="btn" href="{{url_for('bookNow')}}">Book Now</a>
+          {% endif %}
+        </div>
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of home -->
+
+    <!-- Information -->
+    <section class="information">
+      <div class="container-fluid">
+        <div class="row text-light">
+          <div class="col-lg-4 text-center p-5" data-aos="zoom-in">
+            <!-- <i class="fas fa-tachometer-alt fa-3x p-2"></i> -->
+            <img src="/static/assets/muscle.png" style="width: 4em" />
+            <h4 class="py-3">Your Health Is Our Concern</h4>
+            <!-- <p class="para-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam odit consequatur doloribus natus in suscipit!</p> -->
+          </div>
+          <div class="col-lg-4 text-center p-5" data-aos="zoom-in">
+            <i class="fas fa-clock fa-3x p-2"></i>
+            <h4 class="py-3">Exceptional care. Every patient. Every day.</h4>
+            <!-- <p class="para-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam odit consequatur doloribus natus in suscipit!</p> -->
+          </div>
+          <div class="col-lg-4 text-center p-5 text-dark" data-aos="zoom-in" style="background-color: #36454F;">
+            <i class="fas fa-headset fa-3x p-2"></i>
+            <h4 class="py-3" style=" color: white;">24/7 Support</h4>
+            <!-- <p class="para-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam odit consequatur doloribus natus in suscipit!</p> -->
+          </div>
+        </div>
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of information -->
+
+    <!-- About -->
+    <section class="about d-flex align-items-center text-light py-5" id="about">
+      <div class="container">
+        <div class="row d-flex align-items-center">
+          <div class="col-lg-7" data-aos="fade-right">
+            <p>ABOUT US</p>
+            <h1>
+              We look at defining problems and setting goals in relation to each
+              patient's individual situation.
+            </h1>
+            <p class="py-2 para-light">
+              Hands-on treatments, rehabilitation and we offer clear and simple
+              explanations to keep you fully informed of the nature of your
+              problem, the prognosis and aims of treatment.
+            </p>
+            <p class="py-2 para-light">
+              With a team of qualified and experienced professionals that has
+              been helping patients regain their health and wellness since 2000.
+            </p>
+
+            <div class="my-3">
+              {% if session['user_patient'] %}
+              <a class="btn" href="{{url_for('bookNow')}}">Book Now</a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-lg-5 text-center py-4 py-sm-0" data-aos="fade-down">
+            <img
+              class="img-fluid"
+              src="static\assets\img\aboutUS.jpg"
+              alt="about"
+            />
+          </div>
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of about -->
+    <!-- Plans -->
+    <section class="plans d-flex align-items-center py-5" id="plans">
+      <div class="container text-light">
+        <div class="text-center pb-4">
+          <!-- <p>OUR PLANS</p> -->
+          <h2 class="py-2">Physiotherapy</h2>
+          <p class="para-light">
+            Physiotherapy plays a very important role in enabling you to recover from injury, illness or disability, by restoring the movement and function of your body. Our expert team at Saudi German Hospital will help to evaluate musculoskeletal diseases and injuries, joint diseases, neuromuscular diseases, and traumatic injuries. Patients will undergo treatment by our physiatrists using world-leading management techniques such as specific therapy prescriptions, medications, and injections. Physiotherapy is also an important part of the treatment for brain or nervous system-related conditions, such as stroke, Parkinson’s disease, or multiple sclerosis.</p>
+        </div>
+        <div class="row gy-4" data-aos="zoom-in">
+          
+          <div class="col-lg-4">
+            <div class="card bg-transparent px-4">
+              <h4 class="py-2">TREATMENT TYPES</h4>
+                <p class="py-3">Our physiotherapists use a range of diverse treatments, including:</p>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Hydrotherapy</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Electrotherapy</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Chest physiotherapy</p>
+              </div>
+              <br><br><br>
+            </div>  
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card bg-transparent px-4">
+              <h4 class="py-2">SERVICES</h4>
+              <!-- <p class="py-3">Our Physiotherapy Department is dedicated to exceeding expectations. </p> -->
+              <p class="py-3">We provide cutting edge care for:</p>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Bladder issues</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Adult rehabilitation</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Sports Injuries</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Joint Replacements</p>
+              </div>
+              <br><br>
+            </div>
+          </div>
+
+        
+
+          <div class="col-lg-4">
+            <div class="card bg-transparent px-4">
+              <h4 class="py-2">TREATMENT PLAN</h4>
+              <p class="py-3">Here's the process that will guide your road to recovery:</p>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>An Informed Examination</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>A Professional Diagnosis</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>A Professional Diagnosis</p>
+              </div>
+              <div class="block d-flex align-items-center">
+                <p class="pe-2"><i class="far fa-check-circle fa-1x"></i></p>
+                <p>Home Improvement Assignments</p>
+              </div>
+              <br>
+            </div>
+
+          </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of plans -->
+
+    <!-- Work -->
+    <section class="work d-flex align-items-center py-5" id="ourWork">
+      <div class="container-fluid text-light">
+        <div class="row">
+          <div class="text-center text-lg-start py-4 pt-lg-0">
+            <h2 style="text-align: center;">DEPARTMENT ANALYSIS</h2>
+            <h2 class="py-2"></h2>
+            <p class="para-light">
+            </p>
+          </div>
+
+          <div class="col-lg-6 d-flex align-items-center" data-aos="fade-right">
+            <img
+              class="img-fluid"
+              style="height: 500px;margin-top: 20px;"
+              src="static\assets\img\work.jpg"
+              alt="work"
+            />
+          </div>
+          
+          <div class="col-lg-5 d-flex align-items-center px-4 py-3" data-aos="">
+            <div class="row" style="margin-left: 100px;">
+              <div class="container" data-aos="fade-up">
+                <div class="row g-5">
+                  {% for item in dataDevice %}
+                  <div class="col-6 text-start">
+                    <i class="fas fa-briefcase fa-2x text-start"></i>
+                    <h2
+                      class="purecounter"
+                      data-purecounter-start="0"
+                      data-purecounter-end="{{item[0]}}"
+                      data-purecounter-duration="1000000"
+                    >
+                      1
+                    </h2>
+                    <p>DEVICES</p>
+                  </div>
+                  {% endfor %}
+                  {% for item in sqlCountDoctor %}
+                  <div class="col-6">
+                    <i class="fas fa-award fa-2x"></i>
+                    <h2
+                      class="purecounter"
+                      data-purecounter-start="0"
+                      data-purecounter-end="{{item[0]}}"
+                      data-purecounter-duration="1000000"
+                    >
+                      1
+                    </h2>
+                    <p>DOCTORS</p>
+                  </div>
+                  {% endfor %}
+                  {% for item in dataPatient %}
+                  <div class="col-6">
+                    <i class="fas fa-users fa-2x"></i>
+                    <h2
+                      class="purecounter"
+                      data-purecounter-start="0"
+                      data-purecounter-end="{{item[0]}}"
+                      data-purecounter-duration="1000000"
+                    >
+                      
+                    </h2>
+                    <p>PATIENTS</p>
+                  </div>
+                  {% endfor %}
+                  {% for item in data4 %}
+                  <div class="col-6">
+                    <i class="fas fa-clock fa-2x"></i>
+                    <h2
+                      class="purecounter"
+                      data-purecounter-start="0"
+                      data-purecounter-end="{{item[0]}}"
+                      data-purecounter-duration="1000000"
+                    >
+                      1
+                    </h2>
+                    <p>APPOINTMENTS</p>
+                  </div>
+                  {% endfor %}
+                  {% for item in data5 %}
+                  <div class="col-6">
+                    <i class="fas fa-award fa-2x"></i>
+                    <h2
+                      class="purecounter"
+                      data-purecounter-start="0"
+                      data-purecounter-end="{{item[0]}}"
+                      data-purecounter-duration="1000000"
+                    >
+                      1
+                    </h2>
+                    <p>FEEDBACKS</p>
+                  </div>
+                  {% endfor %}  
+                </div>
+              <!-- end of container -->
+            </div>
+                </div>
+              </div>
+
+              </div>
+              <!-- end of container -->
+            <!-- end of row -->
+          </div>
+          <!-- end of col-lg-5 -->
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of work -->
+
+    <!-- Our Doctors-->
+    <div class="slider-1 testimonial text-light d-flex align-items-center" id="bookNow">
+      <div class="container">
+        <div class="row">
+          <div class="text-center w-lg-75 m-auto pb-4">
+            <!-- <p>TESTIMONIALS</p> -->
+            <h2 class="py-2">Our Doctors</h2>
+            <p class="para-light"></p>
+          </div>
+        </div>
+        <!-- end of row -->
+        <div class="row p-2" data-aos="zoom-in">
+          <div class="col-lg-12">
+            <!-- Card Slider -->
+            <div class="slider-container">
+              <div class="swiper-container card-slider">
+                <div class="swiper-wrapper">
+                  <!-- Slide -->
+                  {%for item in dataDoctor%}
+                    <div class="swiper-slide">
+                    <div class="testimonial-card p-4">
+                      <p></p>
+                      <div class="d-flex pt-4">
+                        <div>
+                          <img
+                            class="avatar"
+                            src="{{item[3]}}"
+                            onerror="this.src = '/static/adddevice/images/user.png';"
+                            style="object-fit: cover;"
+                          />
+                        </div>
+                        <div class="ms-3 pt-2">
+                          <h6><a>{{item[0]}}</a></h6>
+                          <p>{{item[4]}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  
+                  <!-- end of swiper-slide -->
+                  <!-- end of slide -->
+                </div>
+                <!-- end of swiper-wrapper -->
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <!-- end of add arrows -->
+              </div>
+              <!-- end of swiper-container -->
+            </div>
+            <!-- end of slider-container -->
+            <!-- end of card slider -->
+          </div>
+          <!-- end of col -->
+        </div>
+        <!-- end of row -->
+        
+    <div class="my-3">
+      {% if session['user_patient'] %}
+      <a class="btn" href="{{url_for('bookNow')}}">Book Now</a>
+      {% endif %}
+    </div>
+      </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of testimonials -->
+
+    <!-- Contact -->
+    <section class="contact d-flex align-items-center py-5" id="contact">
+      <div class="container-fluid text-light">
+        <div class="row">
+          <div
+            class="col-lg-6 d-flex justify-content-center justify-content-lg-end align-items-center px-lg-5"
+            data-aos="fade-right"
+          >
+          <form action="http://127.0.0.1:5000/home" method="POST">
+            <div style="width: 90%">
+              <div class="text-center text-lg-start py-4 pt-lg-0">
+                <p>CONTACT</p>
+                <h2 class="py-2">Send your query</h2>
+                <p class="para-light">
+                  Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within
+                  a matter of hours to help you.</p>
+              </div>
+              <div>
+                <div class="form-group py-1">
+                  <input
+                    type="email"
+                    class="form-control form-control-input"
+                    id="email"
+                    name="email"
+                    placeholder="Enter email"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group py-2">
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group py-2">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group py-1">
+                </div>
+                <div class="form-group py-2">
+                  <textarea
+                    class="form-control form-control-input"
+                    id="message"
+                    name="message"
+                    rows="6"
+                    placeholder="Message"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              <div class="my-3">
+                <input type="submit" class="btn form-control-submit-button">
+              </div>
+            </div>
+          </form>
+          </div>
+          <!-- end of col -->
+          <div class="col-lg-6 d-flex align-items-center" data-aos="fade-down">
+            <img
+              class="img-fluid d-none d-lg-block"
+              src="static\assets\img\contactUss.jpg"
+              alt="contact"
+            />
+          </div>
+          <!-- end of col -->
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of contact -->
+
+    <!-- Location -->
+    <section class="location text-light py-5">
+      <div class="container" data-aos="zoom-in">
+        <div class="row">
+          <div class="col-lg-3 d-flex align-items-center">
+            <div class="p-2"><i class="far fa-map fa-3x"></i></div>
+            <div class="ms-2">
+              <h6>ADDRESS</h6>
+              <p>9 Ahmed Maher ST. El Giza</p>
+            </div>
+          </div>
+          <div class="col-lg-3 d-flex align-items-center">
+            <div class="p-2"><i class="fas fa-mobile-alt fa-3x"></i></div>
+            <div class="ms-2">
+              <h6>CALL FOR QUERY</h6>
+              <p>011239667066</p>
+            </div>
+          </div>
+          <div class="col-lg-3 d-flex align-items-center">
+            <div class="p-2"><i class="far fa-envelope fa-3x"></i></div>
+            <div class="ms-2">
+              <h6>SEND US MESSAGE</h6>
+              <p>MuscleCare@gmail.com</p>
+            </div>
+          </div>
+          <div class="col-lg-3 d-flex align-items-center">
+            <div class="p-2"><i class="far fa-clock fa-3x"></i></div>
+            <div class="ms-2">
+              <h6>OPENING HOURS</h6>
+              <p>06:00 PM - 10:00 PM</p>
+            </div>
+          </div>
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of location -->
+
+    {%endblock%}
+    <!-- Footer -->
+    <section class="footer text-light" style="padding-bottom: 50px;">
+      <div class="container">
+        <div class="row" data-aos="fade-right">
+          <div class="col-lg-3 py-4 py-md-5">
+            <div class="d-flex align-items-center">
+              <h4 class="">Muscle Care</h4>
+            </div>
+            <p class="py-3 para-light">
+              With a team of qualified and experienced professionals that has been helping patients regain their health and wellness since 2000.</p>
+            <div class="d-flex">
+              <div class="me-3">
+                <a href="https://www.facebook.com/Magdy.Nasr.41">
+                  <i class="fab fa-facebook-f fa-2x py-2"></i>
+                </a>
+              </div>
+              <div class="me-3">
+                <a href="https://www.facebook.com/Magdy.Nasr.41">
+                  <i class="fab fa-twitter fa-2x py-2"></i>
+                </a>
+              </div>
+              <div class="me-3">
+                <a href="https://www.facebook.com/Magdy.Nasr.41">
+                  <i class="fab fa-instagram fa-2x py-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- end of col -->
+
+          <div class="col-lg-3 py-4 py-md-5" style="margin-left: 200px;margin-right: 50px">
+            <div>
+              <h4 class="py-2">Quick Links</h4>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="{{ url_for('index') }}"><p class="ms-3">Home</p></a>
+              </div>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="/home#about"><p class="ms-3">About</p></a>
+              </div>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="/home#ourWork"><p class="ms-3">Our Work</p></a>
+              </div>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="/home#plans"><p class="ms-3">Services</p></a>
+              </div>
+            </div>
+          </div>
+          <!-- end of col -->
+
+          <div class="col-lg-3 py-4 py-md-5">
+            <div>
+              <h4 class="py-2">Useful Links</h4>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="{{url_for('preSignUp')}}"><p class="ms-3">SignUp</p></a>
+              </div>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="{{url_for('login')}}"><p class="ms-3">login</p></a>
+              </div>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="/home#contact"><p class="ms-3">Contact</p></a>
+              </div>
+              <div class="d-flex align-items-center py-2">
+                <i class="fas fa-caret-right"></i>
+                <a href="{{url_for('login')}}"><p class="ms-3">Tips</p></a>
+              </div>
+            </div>
+          </div>
+          <!-- end of col -->
+          <form action="http://127.0.0.1:5000/home/feedback" method="POST">
+            <div class="d-flex align-items-center">
+              <h4>Send Feedback</h4>
+            </div>
+            <p class="py-3 para-light">
+            Feel Free To Share Your Experience With Us.   
+            </p>
+            <div class="d-flex align-items-center">
+              <div class="input-group mb-3">
+                <textarea
+                    class="form-control form-control-input"
+                    id="feedback"
+                    name="feedback"
+                    rows="4"
+                    placeholder="Enter Your Feedback"
+                    required
+                  ></textarea>
+                <input type="submit" class="btn-secondary text-light">
+              </div>
+            </div>
+        </form>
+          <!-- end of col -->
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </section>
+    <!-- end of footer -->
+
+    <!-- Bottom -->
+    <div class="bottom py-2 text-light">
+      <div class="container d-flex justify-content-between">
+        <div>
+          <p>Copyright ©FelCode</p>
+          <br />
+        </div>
+        <div>
+          <i class="fab fa-cc-visa fa-lg p-1"></i>
+          <i class="fab fa-cc-mastercard fa-lg p-1"></i>
+          <i class="fab fa-cc-paypal fa-lg p-1"></i>
+          <i class="fab fa-cc-amazon-pay fa-lg p-1"></i>
+        </div>
+      </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of bottom -->
+
+    <!-- Back To Top Button -->
+    <button onclick="topFunction()" id="myBtn">
+      <img src="static\assets\img\up-arrow.png" alt="alternative" />
+    </button>
+    <!-- end of back to top button -->
+
+    <!-- Scripts -->
+    <script src="static\js\bootstrap.min.js"></script>
+    <!-- Bootstrap framework -->
+    <script src="static\js\purecounter.min.js"></script>
+    <!-- Purecounter counter for statistics numbers -->
+    <script src="static\js\swiper.min.js"></script>
+    <!-- Swiper for image and text sliders -->
+    <script src="static\js\aos.js"></script>
+    <!-- AOS on Animation Scroll -->
+    <script src="static\js\script.js"></script>
+    <!-- Custom scripts -->
+  </body>
+</html>

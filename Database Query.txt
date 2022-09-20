@@ -1,0 +1,91 @@
+USE felcode;
+
+CREATE TABLE feedback (
+feedback LONGTEXT
+);
+
+CREATE TABLE contact_us (
+email VARCHAR(50) NOT NULL,
+message LONGTEXT
+);
+
+CREATE TABLE appointment(
+appNo INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+startT VARCHAR(50),
+endT VARCHAR(50),
+dt varchar(50),
+doctorEmail VARCHAR(50),
+patientEmail VARCHAR(50),
+booked INT
+);
+
+
+CREATE TABLE device(
+device_num INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+device_name VARCHAR(50) NOT NULL,
+device_model VARCHAR(50) NOT NULL,
+technician_id INT NOT NULL,
+technician_name VARCHAR(50) NOT NULL,
+photo VARCHAR(255),
+count INT NOT NULL,
+description LONGTEXT
+);
+
+CREATE TABLE doctor(
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name TEXT(50) NOT NULL,
+ssn BIGINT NOT NULL,
+sex VARCHAR(10) NOT NULL,
+email VARCHAR(50) NOT NULL,
+phone BIGINT NOT NULL,
+password VARCHAR(30) NOT NULL,
+address VARCHAR(70),
+birth_date DATE NOT NULL,
+specialization VARCHAR(30) DEFAULT "Physiotherapy",
+photo VARCHAR(255)
+);
+
+CREATE TABLE patient(
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name TEXT(50) NOT NULL,
+ssn BIGINT NOT NULL,
+phone BIGINT NOT NULL,
+address VARCHAR(30) NOT NULL,
+email VARCHAR(50) NOT NULL,
+password VARCHAR(30) NOT NULL,
+sex VARCHAR(10) NOT NULL,
+birth_date DATE NOT NULL,
+marital_status VARCHAR(10),
+job VARCHAR(30),
+insurance_num VARCHAR(14),
+credit_card VARCHAR(30),
+photo VARCHAR(255)
+);
+
+CREATE TABLE doctorprerequest (
+  id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name tinytext NOT NULL,
+  ssn int NOT NULL,
+  sex varchar(10) NOT NULL,
+  email varchar(50) NOT NULL,
+  password varchar(30) NOT NULL,
+  address varchar(100) NOT NULL,
+  birth_date date NOT NULL,
+  specialization varchar(30) DEFAULT 'Specialization',
+  photo varchar(255),
+  phone int NOT NULL
+);
+
+CREATE TABLE users(
+email VARCHAR(50) NOT NULL,
+password VARCHAR(30) NOT NULL,
+type VARCHAR(20) 
+);
+
+CREATE TABLE messages (
+  id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  emailTo varchar(50) NOT NULL,
+  emailFrom varchar(50) NOT NULL,
+  title varchar(50) NOT NULL,
+  message varchar(500) NOT NULL
+);

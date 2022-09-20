@@ -1,0 +1,37 @@
+{%extends'index.html'%} {%block main%}
+<link
+  rel="stylesheet"
+  href="{{url_for('static',filename='css/viewdevicestyle.css')}}"
+/>
+
+<body style="background-color: #212121">
+  <br /><br /><br /><br />
+  <div class="container">
+    <h1 style="color: whitesmoke">Devices</h1>
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Device Number</th>
+          <th scope="col">Device Name</th>
+          <th scope="col">Device Model</th>
+          <th scope="col">Technician ID</th>
+          <th scope="col">Technician Name</th>
+          <th scope="col">Number of Devices</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in data %}
+
+        <tr>
+          {% for c in r %}
+          <td>{{c}}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <br /><br /><br /><br /><br />
+</body>
+{%endblock%}
